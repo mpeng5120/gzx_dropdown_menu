@@ -7,8 +7,9 @@ class GZXDropDownHeader extends StatefulWidget {
   final Color color;
   final double borderWidth;
   final Color borderColor;
-  TextStyle style;
-  TextStyle dropDownStyle;
+
+//  TextStyle style;
+//  TextStyle dropDownStyle;
   final double iconSize;
   final Color iconColor;
   Color iconDropDownColor;
@@ -27,8 +28,8 @@ class GZXDropDownHeader extends StatefulWidget {
     @required this.items,
     @required this.controller,
     @required this.stackKey,
-    this.style = const TextStyle(color: Color(0xFF666666), fontSize: 13),
-    this.dropDownStyle,
+//    this.style = const TextStyle(color: Color(0xFF666666), fontSize: 13),
+//    this.dropDownStyle,
     this.height = 40,
     this.iconColor = const Color(0xFFafada7),
     this.iconDropDownColor,
@@ -71,7 +72,7 @@ class _GZXDropDownHeaderState extends State<GZXDropDownHeader> with SingleTicker
   Widget build(BuildContext context) {
 //    print('_GZXDropDownHeaderState.build');
 
-    widget.dropDownStyle ??= TextStyle(color: Theme.of(context).primaryColor, fontSize: 13);
+//    widget.dropDownStyle ??= TextStyle(color: Theme.of(context).primaryColor, fontSize: 13);
     widget.iconDropDownColor ??= Theme.of(context).primaryColor;
 
     MediaQueryData mediaQuery = MediaQuery.of(context);
@@ -105,6 +106,8 @@ class _GZXDropDownHeaderState extends State<GZXDropDownHeader> with SingleTicker
   _menu(GZXDropDownHeaderItem item) {
     int index = widget.items.indexOf(item);
     int menuIndex = widget.controller.menuIndex;
+    var dropDownStyle = item.dropDownStyle ?? TextStyle(color: Theme.of(context).primaryColor, fontSize: 13);
+    var style = item.style ?? const TextStyle(color: Color(0xFF666666), fontSize: 13);
     _isShowDropDownItemWidget = index == menuIndex && widget.controller.isShow;
 
     return GestureDetector(
@@ -122,9 +125,8 @@ class _GZXDropDownHeaderState extends State<GZXDropDownHeader> with SingleTicker
 
         if (widget.controller.isShow) {
           widget.controller.hide();
-        } else {
-          widget.controller.show(index);
         }
+        widget.controller.show(index);
         if (widget.onItemTap != null) {
           widget.onItemTap(index);
         }
@@ -144,7 +146,7 @@ class _GZXDropDownHeaderState extends State<GZXDropDownHeader> with SingleTicker
                       item.title,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: _isShowDropDownItemWidget ? widget.dropDownStyle : widget.style,
+                      style: _isShowDropDownItemWidget ? dropDownStyle : style,
                     )),
                     Icon(
                       !_isShowDropDownItemWidget
@@ -173,9 +175,13 @@ class GZXDropDownHeaderItem {
   final String title;
   final IconData iconData;
   final double iconSize;
+  final TextStyle dropDownStyle;
+  final TextStyle style;
 
   GZXDropDownHeaderItem(
     this.title, {
+    this.dropDownStyle,
+    this.style,
     this.iconData,
     this.iconSize,
   });
